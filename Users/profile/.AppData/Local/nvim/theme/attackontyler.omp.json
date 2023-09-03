@@ -1,0 +1,94 @@
+{
+  "$schema": "http://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "diamond",
+          "leading_diamond": "\ue0b6",
+          "foreground": "#ffffff",
+          "background": "#cc3802",
+          "template": "{{ if .Env.PNPPSHOST }} \uf8c5 {{ .Env.PNPPSHOST }} {{ end }}"
+        },
+        {
+          "type": "text",
+          "style": "powerline",
+          "foreground": "#ffffff",
+          "background": "#047e84",
+          "powerline_symbol": "\ue0b0",
+          "template": "{{ if .Env.PNPPSSITE }} \uf2dd {{ .Env.PNPPSSITE }}{{ end }}"
+        },
+        {
+          "type": "text",
+          "style": "diamond",
+          "foreground": "#ffffff",
+          "background": "#047e84",
+          "template": "{{ if .Env.PNPPSSITE }}\u00A0{{ end }}"
+        }
+      ],
+      "type": "rprompt"
+    },
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "background": "#5C1A1B",
+          "foreground": "#ffffff",
+          "leading_diamond": "\ue0b6",
+          "style": "diamond",
+          "template": "{{ .Username }} ",
+          "type": "session"
+        },
+        {
+          "background": "#8C2155",
+          "foreground": "#ffffff",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "folder_icon": "\uf155",
+            "folder_separator_icon": "\ue0b1",
+            "max_depth": 2,
+            "style": "agnoster_short"
+          },
+          "style": "powerline",
+          "template": " {{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "background": "#AF7595",
+          "foreground": "#ffffff",
+          "properties": {
+            "fetch_status": true,
+            "fetch_upstream_icon": true,
+            "fetch_stash_count": true
+          },
+          "style": "diamond",
+          "template": "{{if .UpstreamIcon }} {{ .UpstreamIcon }}{{ end }}({{ .HEAD }}){{ if .Working.Changed }}  {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }}  {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }}  {{ .StashCount }}{{ end }}",
+          "trailing_diamond": "\ue0b0",
+          "type": "git"
+        },
+        {
+          "background": "#A4A8D1",
+          "foreground": "#000000",
+          "powerline_symbol": "\ue0b0",
+          "properties": {
+            "fetch_version": false
+          },
+          "style": "powerline",
+          "template": " {{ if .Venv }}{{ .Venv }}{{ end }} ",
+          "type": "python"
+        },
+        {
+          "foreground": "#AED4E6",
+          "style": "plain",
+          "template": " {{ if .Root }}<lightRed>#</>{{ else }}${{ end }}",
+          "type": "text"
+        }
+      ],
+      "type": "prompt"
+    }
+  ],
+  "final_space": true,
+  "version": 2
+}

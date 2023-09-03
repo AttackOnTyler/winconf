@@ -38,7 +38,7 @@
           "foreground": "#ffffff",
           "leading_diamond": "\ue0b6",
           "style": "diamond",
-          "template": "{{ .Username }} ",
+          "template": "{{ .UserName }} ",
           "type": "session"
         },
         {
@@ -47,7 +47,7 @@
           "powerline_symbol": "\ue0b0",
           "properties": {
             "folder_icon": "\uf155",
-            "folder_separator_icon": "\ue0b1",
+            "folder_separator_icon": " \ue0b1 ",
             "max_depth": 2,
             "style": "agnoster_short"
           },

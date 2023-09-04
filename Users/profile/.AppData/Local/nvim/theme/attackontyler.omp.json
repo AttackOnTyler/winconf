@@ -5,35 +5,6 @@
       "alignment": "left",
       "segments": [
         {
-          "type": "text",
-          "style": "diamond",
-          "leading_diamond": "\ue0b6",
-          "foreground": "#ffffff",
-          "background": "#cc3802",
-          "template": "{{ if .Env.PNPPSHOST }} \uf8c5 {{ .Env.PNPPSHOST }} {{ end }}"
-        },
-        {
-          "type": "text",
-          "style": "powerline",
-          "foreground": "#ffffff",
-          "background": "#047e84",
-          "powerline_symbol": "\ue0b0",
-          "template": "{{ if .Env.PNPPSSITE }} \uf2dd {{ .Env.PNPPSSITE }}{{ end }}"
-        },
-        {
-          "type": "text",
-          "style": "diamond",
-          "foreground": "#ffffff",
-          "background": "#047e84",
-          "template": "{{ if .Env.PNPPSSITE }}\u00A0{{ end }}"
-        }
-      ],
-      "type": "rprompt"
-    },
-    {
-      "alignment": "left",
-      "segments": [
-        {
           "background": "#5C1A1B",
           "foreground": "#ffffff",
           "leading_diamond": "\ue0b6",
@@ -78,7 +49,14 @@
           "style": "powerline",
           "template": " {{ if .Venv }}{{ .Venv }}{{ end }} ",
           "type": "python"
-        },
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
         {
           "foreground": "#AED4E6",
           "style": "plain",

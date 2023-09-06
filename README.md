@@ -9,7 +9,8 @@ This guide will cover the following...
 - [Installing Neovim](#Install-Neovim)
 - [Installing Git For Windows](#Install-GitForWindows)
 - [Installing Oh-my-posh](#Install-ohmyposh)
-- [Installing Noeriats (optional)](#Installing-noeriats)
+- [Installing Noeriats (optional)](#installing-noeriats-optional)
+- [Installing Mingw](#installing-mingw)
 - [Configuring Neovim](#Configuring-Neovim)
 - [Installing GlazeWM](#Install-GlazeWM)
 
@@ -75,9 +76,20 @@ Let's admit it. The default experience of BASH can leave a lot to be desired. Th
 
 We should now have everything installed and our shell should be completely configured and themed. If currently in an existing BASH session, run the command exec bash to refresh the current bash profile.
 
-## Installing noeriats
+## Installing noeriats (optional)
 
 Noeriats is a custom language pack setting for English that maps the keyboard keys into the noeriats layout. The noeriats layout was generated via corpus and manual tuning to get the sweet spot of rolls, popular bi/trigram on separate fingers, improved home row, as well as symbol remapping for common symbols that get used more than 'q' for instance. I've been using this layout for 10 months and the number row and it's symbols have never been incorperated into my brain the same way and I'm typing aroung 80 wpm. The main reason to install a windows language pack rather than modifiying the layout manually, through keyboard settings, are shortcut keys do not get remapped in the layout when using noeriats through lang pack.
+
+## Installing Mingw
+
+This is necessary to get a C compiler on the workstation, primarily for treesitter.
+
+### Install steps
+
+- Open PowerShell.exe
+- Via chocolatey -> choco install mingw
+- Run -> Set-ExecutionPolicy Bypass -Scope Process -Force; Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+-
 
 ## Configuring Neovim
 
@@ -95,118 +107,157 @@ If adding ohmyposh, there should be an existing 'nvim' folder in the %localappda
     - add require("attackontyler.lazy") which will be our package manager for this nvimrc
     - add require("attackontyler.after.plugins") which will handle the plugins that are installed by lazy after install
 - add another file remap.lua and add the following...
-    - vim.g.mapleader = " "
-    - vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-    - 
-    - -- The following remapping is mainly due to noeriats layout, also inverted 'T', because hjkl sucks, fight me
-    - vim.keymap.set("n", "k", "a", { noremap = true })
-    - vim.keymap.set("n", "j", "t", { noremap = true })
-    - vim.keymap.set("n", "h", "i", { noremap = true })
-    - vim.keymap.set("n", "l", "u", { noremap = true })
-    - vim.keymap.set("n", "a", "j", { noremap = true })
-    - vim.keymap.set("n", "u", "k", { noremap = true })
-    - vim.keymap.set("n", "i", "h", { noremap = true })
-    - vim.keymap.set("n", "t", "l", { noremap = true })
-    - 
-    - -- The following remapping is mainly due to noeriats, just for netrw
-    - vim.api.nvim_create_autocmd('filetype', {
-    -   pattern = 'netrw',
-    -   desc = 'Better mappings for netrw',
-    -   callback = function()
-    -     local bind = function(lhs, rhs)
-    -       vim.keymap.set('n', lhs, rhs, {remap = false, buffer = true})
-    -     end
-    - 
-    -     -- move up
-    -     bind('u', 'k')
-    - 
-    -     -- move down
-    -     bind('a', 'j')
-    -   end
-    - })
+    ```lua
+    vim.g.mapleader = " "
+    vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+     
+    -- The following remapping is mainly due to noeriats layout, also inverted 'T', because hjkl sucks, fight me
+    vim.keymap.set("n", "k", "a", { noremap = true })
+    vim.keymap.set("n", "j", "t", { noremap = true })
+    vim.keymap.set("n", "h", "i", { noremap = true })
+    vim.keymap.set("n", "l", "u", { noremap = true })
+    vim.keymap.set("n", "a", "j", { noremap = true })
+    vim.keymap.set("n", "u", "k", { noremap = true })
+    vim.keymap.set("n", "i", "h", { noremap = true })
+    vim.keymap.set("n", "t", "l", { noremap = true })
+     
+    -- The following remapping is mainly due to noeriats, just for netrw
+    vim.api.nvim_create_autocmd('filetype', {
+      pattern = 'netrw',
+      desc = 'Better mappings for netrw',
+      callback = function()
+        local bind = function(lhs, rhs)
+          vim.keymap.set('n', lhs, rhs, {remap = false, buffer = true})
+        end
+    
+        -- move up
+        bind('u', 'k')
+    
+        -- move down
+        bind('a', 'j')
+      end
+    })
+    ```
 - add another file lazy.lua and add the following...
-    - local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-    - if not vim.loop.fs_stat(lazypath) then
-    -   vim.fn.system({
-    -     "git",
-    -     "clone",
-    -     "--filter=blob:none",
-    -     "https://github.com/folke/lazy.nvim.git",
-    -     "--branch=stable", -- latest stable release
-    -     lazypath,
-    -   })
-    - end
-    - vim.opt.rtp:prepend(lazypath)
-    - 
-    - require("lazy").setup("attackontyler.plugins")
+    ```lua
+    local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+    if not vim.loop.fs_stat(lazypath) then
+      vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+      })
+    end
+    vim.opt.rtp:prepend(lazypath)
+    
+    require("lazy").setup("attackontyler.plugins")
+    ```
 - add 'plugins' dir using 'd' in netrw
     - add 'onedark.lua'
-        - return {
-        -   "navarasu/onedark.nvim",
-        -   priority = 1000,
-        -   config = function()
-        -     vim.cmd([[colorscheme onedark]])
-        -   end
-        - }
+        ```lua
+        return {
+          "navarasu/onedark.nvim",
+          priority = 1000,
+          config = function()
+            vim.cmd([[colorscheme onedark]])
+          end
+        }
+        ```
     - add 'telescope.lua'
-        - return {
-        -   'nvim-telescope/telescope.nvim', tag = '0.1.2',
-        -   dependencies = { 'nvim-lua/plenary.nvim' }
-        - }
+        ```lua
+        return {
+          'nvim-telescope/telescope.nvim', tag = '0.1.2',
+          dependencies = { 'nvim-lua/plenary.nvim' }
+        }
+        ```
     - add 'vimbetter.lua'
-        - return {
-        -   'ThePrimeagen/vim-be-good'
-        - }
+        ```lua
+        return {
+          'ThePrimeagen/vim-be-good'
+        }
+    - add 'treesitter.lua'
+        ```lua
+        return {
+            "nvim-treesitter/nvim-treesitter",
+            build = ":TSUpdate",
+            config = function()
+                local configs = require("nvim-treesitter.configs")
+
+                configs.setup({
+                    ensure_installed = { "c", "lua", "python", "html" },
+                    sync_install = false,
+                    auto_install = true,
+                    highlight = {enable = true },
+                    indent = {enable = true, additional_vim_regex_highlighting = false },
+                })
+            end
+        }
+        ```
+    - add 'playground.lua'
+        ```lua
+        return {
+            'nvim-treesitter/playground'
+        }
+        ```
 - add 'after/plugins' dir
     - add 'init.lua'
-        - require("attackontyler.after.plugins.colors")
-        - require("attackontyler.after.plugins.telescope")
+        ```lua
+        require("attackontyler.after.plugins.colors")
+        require("attackontyler.after.plugins.telescope")
+        ```
     - add 'colors.lua'
-        - require('onedark').setup {
-        -   -- Main options --
-        -   style = 'deep',
-        -   transparent = true,
-        -   term_colors = false,
-        -   ending_tildes = false,
-        -   cmp_itemkind_reverse = false,
-        - 
-        -   -- toggle theme style --
-        -   toggle_style_key = nil,
-        -   toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'},
-        - 
-        -   -- Change code style --
-        -   code_style = {
-        -     comments = 'italic',
-        -     keywords = 'none',
-        -     functions = 'none',
-        -     strings = 'none',
-        -     variables = 'none'
-        -   },
-        - 
-        -   -- Lualine options --
-        -   lualine = {
-        -     transparent = false,
-        -   },
-        - 
-        -   -- Custom Highlights --
-        -   colors = {},
-        -   highlights = {},
-        - 
-        -   -- Plugins Config --
-        -   diagnostics = {
-        -     darker = true,
-        -     undercurl = true,
-        -     background = true,
-        -   },
-        - }
-        - require('onedark').load()
+        ```lua
+        require('onedark').setup {
+          -- Main options --
+          style = 'deep',
+          transparent = true,
+          term_colors = false,
+          ending_tildes = false,
+          cmp_itemkind_reverse = false,
+        
+          -- toggle theme style --
+          toggle_style_key = nil,
+          toggle_style_list = {'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'},
+        
+          -- Change code style --
+          code_style = {
+            comments = 'italic',
+            keywords = 'none',
+            functions = 'none',
+            strings = 'none',
+            variables = 'none'
+          },
+        
+          -- Lualine options --
+          lualine = {
+            transparent = false,
+          },
+        
+          -- Custom Highlights --
+          colors = {},
+          highlights = {},
+        
+          -- Plugins Config --
+          diagnostics = {
+            darker = true,
+            undercurl = true,
+            background = true,
+          },
+        }
+        require('onedark').load()
+        ```
     - add 'telescope.lua'
-        - local builtin = require('telescope.builtin')
-        - vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-        - vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-        - vim.keymap.set('n', '<leader>ps', function()
-        -   builtin.grep_string({ search = vim.fn.input("Grep > ") });
-        - end)
+        ```lua
+        local builtin = require('telescope.builtin')
+        vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
+        vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+        vim.keymap.set('n', '<leader>ps', function()
+          builtin.grep_string({ search = vim.fn.input("Grep > ") });
+        end)
+        ```
 - There is still more to setup within nvim, i just haven't done it yet.
     - We still need [Treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
         - And its after/plugins/treesitter.lua

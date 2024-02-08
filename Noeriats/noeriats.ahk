@@ -4,11 +4,11 @@ Loop {
 	or GetKeyState("Alt")
 	or GetKeyState("LWin")
 	or GetKeyState("RWin") {
-		Suspend, Off
+		Suspend 1
 	} else {
-		Suspend, On
+		Suspend 0
 	}
-	Sleep, 50
+	Sleep(50)
 }
 
 ; QWERTY to Noeriats mapping
